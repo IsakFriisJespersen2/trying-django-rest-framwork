@@ -1,3 +1,5 @@
+from email.policy import default
+from unittest.util import _MAX_LENGTH
 from django.db import models
 from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
@@ -8,7 +10,6 @@ from pygments import highlight
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted([(item, item) for item in get_all_styles()])
-
 
 class Snippet(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -41,3 +42,6 @@ class Snippet(models.Model):
     class Meta:
         ordering = ["created"]
 
+class Comments(models.Model):
+    text = models.CharField(max_length=200)
+    snippet = models.ForeignKey(Snippet, on_delete=models.CASCADE, default=None)
